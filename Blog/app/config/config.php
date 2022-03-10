@@ -2,12 +2,12 @@
   // App Root
   define('APPROOT', dirname(dirname(__FILE__)));
   // URL Root
-  define('URLROOT', 'YOUR_URLROOT');
+  define('URLROOT', 'http://localhost/ECommerce_Assign02/Blog');
   // Site Name
-  define('SITENAME', 'YOUR_SITENAME');
+  define('SITENAME', 'Blog Application');
 
   // Database Params
-  define('DB_HOST', 'YOUR_DB_HOST');
-  define('DB_USER', 'YOUR_DB_USER');
-  define('DB_PASS', 'YOUR_DB_PASSWORD');
-  define('DB_NAME', 'YOUR_DB_NAME');
+  define('DB_HOST', 'localhost');
+  define('DB_USER', 'root');
+  define('DB_PASS', '');
+  define('DB_NAME', 'blog_app');
