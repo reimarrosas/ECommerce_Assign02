@@ -2,7 +2,7 @@ Options -MultiViews
 
 RewriteEngine on
 
-RewriteBase /Blog/public
+RewriteBase /ECommerce_Assign02/Blog/public
 
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
