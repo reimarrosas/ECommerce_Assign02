@@ -17,8 +17,8 @@ class Comment extends Controller
         $data = ['process' => 'Create'];
         if (!$this->isAuthorized()) {
             return;
-        } else if (!isset($_POST['create_comment'])) {
-            $this->view('Comment/populateComment', $data);
+        } else if (!isset($_POST['confirm'])) {
+            $this->view('Comment/createComment', $data);
         } else {
             $profileId = $_SESSION['profile_id'];
 
@@ -27,7 +27,7 @@ class Comment extends Controller
 
             if (strlen($sanitized_comment) < 1) {
                 $data['error'] = 'Error: Comment does not allow special characters!';
-                $this->view('Comment/populateComment', $data);
+                $this->view('Comment/createComment', $data);
             } else {
                 $isSucc = $this->commentModel->createComment($publicationId, $profileId, $sanitized_comment);
                 echo $isSucc;

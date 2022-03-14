@@ -4,6 +4,11 @@
                 <div class="update-form">
                     <form action="">
                         <h1>Update Comment</h1>
+                        <?php if (isset($data['error'])): ?>
+                            <div class="alert alert-danger">
+                                <?= $data['error'] ?>
+                            </div>
+                        <?php endif; ?>
                         <textarea class="update-form-comment" id="pub_comment" placeholder="Comment here...[Limit:200 Characters]" name="pub_comment" cols="30" rows="10"></textarea>
                         <button class="button-primary">Confirm</button>
                     </form>
