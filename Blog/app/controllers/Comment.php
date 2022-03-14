@@ -22,7 +22,7 @@ class Comment extends Controller
         } else {
             $profileId = $_SESSION['profile_id'];
 
-            $comment = $_POST['comment_text'];
+            $comment = $_POST['pub_comment'];
             $sanitized_comment = filter_var($comment, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
             if (strlen($sanitized_comment) < 1) {
@@ -36,6 +36,41 @@ class Comment extends Controller
                 } else {
                     echo '<h1 class="text-danger">Internal Server Error: Something Broke!</h1>';
                     echo '<meta http-equiv="refresh" content="2;url=' . URLROOT . '/publication/' . $publicationId . '" />';
+                }
+            }
+        }
+    }
+
+    // UPDATE COMMENT
+    public function updateComment($publicationId, $commentId)
+    {
+        $data = ['process' => 'Update'];
+        if ($this->isAuthorized()) {
+            $profileId = $_SESSION['profile_id'];
+            if (!isset($_POST['confirm'])) {
+                $pub_comment = $this->commentModel->getComment($commentId, $profileId);
+                if (isset($pub_comment)) {
+                    $data['pub_comment'] = $pub_comment;
+                    $this->view('Comment/updateComment', $data);
+                } else {
+                    echo '<meta http-equiv="refresh" content="0;url=' . URLROOT . '/publication/' . $publicationId . '" />';
+                }
+            } else {
+                $comment = $_POST['pub_comment'];
+                $sanitized_comment = filter_var($comment, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+                if (strlen($sanitized_comment) < 1) {
+                    $data['error'] = 'Error: Comment does not allow special characters';
+                    $this->view('Comment/updateComment', $data);
+                } else {
+                    $isSucc = $this->commentModel->updateComment($commentId, $profileId);
+
+                    if ($isSucc) {
+                        echo '<meta http-equiv="refresh" content="0;url=' . URLROOT . '/publication/' . $publicationId . '" />';
+                    } else {
+                        echo '<h1 class="text-danger">Internal Server Error: Something Broke!</h1>';
+                        echo '<meta http-equiv="refresh" content="2;url=' . URLROOT . '/publication/' . $publicationId . '" />';
+                    }
                 }
             }
         }
