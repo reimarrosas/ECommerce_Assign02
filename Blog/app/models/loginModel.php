@@ -20,7 +20,7 @@
         }
 
         public function createAuthor($data){
-            $this->db->query("INSERT INTO authors (username,password_hash) VALUES (:username, :password_hash");
+            $this->db->query("INSERT INTO authors (username,password_hash) VALUES (:username, :password_hash)");
             $this->db->bind(":username",$data["username"]);
             $this->db->bind(":password_hash",$data["password_hash"]);
 
