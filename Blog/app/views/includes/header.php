@@ -5,42 +5,48 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/style.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  
+
+
   <title><?php echo SITENAME; ?></title>
 </head>
 
 <body>
 
-  <div class="container">
+  <div class="nav-bar">
+    <div class="wrapper">
+      <nav>
+        <div class="logo">
+          <a href="/ECommerce_Assign02/Blog/Home">Blog.IO</a>
+        </div>
+        <div class="search-bar">
+          <input type="text" placeholder="Search Publication...">
+        </div>
+        <div class="nav-items">
+          <ul>
+            <?php
 
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  
+            if (isLoggedIn()) {
+              echo '<li><a href="/ECommerce_Assign02/Blog/Login/Profile/profile" name="profile"> Profile</a></li>
+              <li><a href="/ECommerce_Assign02/Blog/Login/logout" name="logout"> Logout</a></li>';
+            } 
+            else {
 
-<div class="collapse navbar-collapse" id="navbarSupportedContent">
-  <ul class="navbar-nav mr-auto">
-    <li class="nav-item">
-      <a class="nav-link" href="/ECommerce_Assign02/Blog/Home">Home</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/ECommerce_Assign02/Blog/Profile">Profile</a>
-    </li>
-    
-  </ul>
+              echo '<li><a href="/ECommerce_Assign02/Blog/Login/register" name="signup"> Sign Up</a></li>
+                  <li><a href="/ECommerce_Assign02/Blog/Login/index" name="signin"> Login</a></li>';
+            }
+            ?>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
 
-  <ul class="nav navbar-nav navbar-right">
-  <form class="form-inline">
-    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-  </form>
-    <?php
-      echo '<li class="nav-item"><a class="nav-link" href="/ECommerce_Assign02/Blog/Login/register"><i class="fa-solid fa-user-plus"></i> Sign Up</a></li>
-          <li class="nav-item"><a class="nav-link" href="/ECommerce_Assign02/Blog/Login/"><i class="fa-solid fa-right-to-bracket"></i> Login</a></li>';
-    ?>
-  </ul>
-</div>
-</nav>
+
+
+
+</body>
