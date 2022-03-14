@@ -21,11 +21,11 @@ class Controller
         return new $modelName;
     }
 
-    public function isAuthorized($profileId)
+    public function isAuthorized()
     {
         if (!isLoggedIn()) {
             echo '<meta http-equiv="refresh" content="0;url=' . URLROOT . '/login" />';
-        } else if (!$profileId) {
+        } else if (!isset($_SESSION['profile_id'])) {
             echo '<meta http-equiv="refresh" content="0;url=' . URLROOT . '/profile" />';
         } else {
             return true;
