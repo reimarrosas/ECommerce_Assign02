@@ -23,4 +23,12 @@ class publicationModel extends Model
 
         return false;
     }
+
+    public function deletePublication($publicationId, $profileId)
+    {
+        $this->query('DELETE FROM publications WHERE publication_id = :publicationId AND profile_id = :profileId');
+        $this->bind('publicationId', $publicationId);
+        $this->bind('profileId', $profileId);
+        return $this->execute();
+    }
 }
