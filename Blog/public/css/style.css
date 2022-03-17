@@ -299,6 +299,39 @@ button.edit-button {
     cursor:pointer;
 }
 
+input.edit-button{
+    background-color: #17A2B8;
+    float: right;
+    margin-left: 5px;
+    text-align: center;
+    border: none;
+    border-radius: 20px;
+    padding: 15px;
+    line-height: 20%;
+    height: 15px;
+    font-weight: bold;
+    /* background-color: #007BFF; */
+    color: #FFFFFF;
+    cursor:pointer;
+}
+
+input.delete-button{
+    background-color: #DC3545;
+    float: right;
+    margin-left: 5px;
+    text-align: center;
+    border: none;
+    border-radius: 20px;
+    padding: 15px;
+    line-height: 20%;
+    height: 15px;
+    font-weight: bold;
+    /* background-color: #007BFF; */
+    color: #FFFFFF;
+    cursor:pointer;
+}
+
+
 /* Profile */
 .profile-name{
     margin-bottom: 25px;
@@ -410,5 +443,10 @@ textarea.update-form-comment{
 
 .update-form label input{
     width: 15px;
+}
+
+textarea.update-form-error{
+    border: solid #DC3545;
+    color: #DC3545;
 }
 /*         */

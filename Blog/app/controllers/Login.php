@@ -11,48 +11,59 @@ class Login extends Controller
         if (!isset($_POST['login'])) {
             $this->view('Login/index');
         } else {
-            $author = $this->loginModel->getAuthor($_POST['username']);
-
-            if ($author != null) {
-                $hashed_pass = $author->password_hash;
-                $password = $_POST['password'];
-
+            if (empty($_POST['username'])) {
                 $data = [
-                    'username_error' => '',
+                    'username_error' => 'Please enter a username.',
                     'password_error' => '',
                     'msg' => ''
                 ];
+                if(empty($_POST['password'])){
+                    $data['password_error'] = 'Please enter a password.';
+                }
+                $this->view('Login/index', $data);
+            } 
+            else {
+                $author = $this->loginModel->getAuthor($_POST['username']);
 
-                if (password_verify($password, $hashed_pass)) {
-                    $this->createSession($author);
-                    echo 'Hello '. trim($_POST['username']).', Please wait logging in ';
-                    echo '<meta http-equiv="Refresh" content="2; url=/ECommerce_Assign02/Blog/">';
-                    $this->view('Home/home', $data);
+                if ($author != null) {
+                    $hashed_pass = $author->password_hash;
+                    $password = $_POST['password'];
+
+                    $data = [
+                        'username_error' => '',
+                        'password_error' => '',
+                        'msg' => ''
+                    ];
+
+                    if (password_verify($password, $hashed_pass)) {
+                        $this->createSession($author);
+                        echo 'Hello ' . trim($_POST['username']) . ', Please wait logging in ';
+                        echo '<meta http-equiv="Refresh" content="2; url=/ECommerce_Assign02/Blog/">';
+                        // $this->view('Home/home', $data);
+                    } else {
+                        $data = [
+                            'password_error' => 'Incorrect password entered!',
+                        ];
+                        $this->view('Login/index', $data);
+                    }
                 } else {
                     $data = [
-                        'password_error' => 'Incorrect password entered!',
+                        'username_error' => 'Account with username: ' . $_POST['username'] . ' does not exist.',
                     ];
                     $this->view('Login/index', $data);
                 }
-            }
-            else{
-                $data = [
-                    'username_error' => 'Author: ' . $_POST['username'] . ' does not exists.',
-                ];
-                $this->view('Login/index', $data);
             }
         }
     }
 
     public function register()
     {
-        if(!isset($_POST['register'])){
+        if (!isset($_POST['register'])) {
 
             $this->view('Login/register');
-        }
-        else{
+        } else {
             $author = $this->loginModel->getAuthor($_POST['username']);
-            if($author == null){
+            if ($author == null) {
                 $data = [
                     'username' => trim($_POST['username']),
                     'password' => $_POST['password'],
@@ -64,40 +75,39 @@ class Login extends Controller
                     'password_len_error' => '',
                     'msg' => ''
                 ];
-                if($this->validateData($data)){
-                    if($this->loginModel->createAuthor($data)){
-                        echo 'Please wait creating the account for '.trim($_POST['username']);
+                if ($this->validateData($data)) {
+                    if ($this->loginModel->createAuthor($data)) {
+                        // $this->createSession($author);
+                        echo 'Please wait creating the account for ' . trim($_POST['username']);
                         echo '<meta http-equiv="Refresh" content="2; url=/ECommerce_Assign02/Blog/">';
-                 }
-                } 
-            }
-            else{
+                    }
+                }
+            } else {
                 $data = [
-                    'username_error' => "Author: ". $_POST['username'] ." already exists",
+                    'username_error' => "Author: " . $_POST['username'] . " already exists",
                 ];
-                $this->view('Login/register',$data);
+                $this->view('Login/register', $data);
             }
-            
         }
     }
 
-    public function validateData($data){
-        if(empty($data['username'])){
-            $data['username_error'] = 'Username can not be empty';
-        }
-        
-        if(strlen($data['password']) < 6){
-            $data['password_len_error'] = 'Password can not be less than 6 characters';
-        }
-        if($data['password'] != $data['password_verify']){
-            $data['password_match_error'] = 'Password does not match';
+    public function validateData($data)
+    {
+        if (empty($data['username'])) {
+            $data['username_error'] = 'Username cannot be empty.';
         }
 
-        if(empty($data['username_error']) && empty($data['password_error']) && empty($data['password_len_error']) && empty($data['password_match_error'])){
-            return true;
+        if (strlen($data['password']) < 6) {
+            $data['password_len_error'] = 'Password cannot be less than 6 characters.';
         }
-        else{
-            $this->view('Login/register',$data);
+        if ($data['password'] != $data['password_verify']) {
+            $data['password_match_error'] = 'Password does not match.';
+        }
+
+        if (empty($data['username_error']) && empty($data['password_error']) && empty($data['password_len_error']) && empty($data['password_match_error'])) {
+            return true;
+        } else {
+            $this->view('Login/register', $data);
         }
     }
 
@@ -114,3 +124,4 @@ class Login extends Controller
         echo '<meta http-equiv="Refresh" content="1; url=/ECommerce_Assign02/Blog/">';
     }
 }
+

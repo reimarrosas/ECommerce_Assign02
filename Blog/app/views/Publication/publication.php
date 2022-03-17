@@ -1,33 +1,40 @@
 <?php require APPROOT . '/views/includes/header.php'; ?>
 <div class="wrapper">
         <div class="publication-container">
-            <h1><a class="publication-title" href="#">Publication Title Link</a></h1>
+            <h1><a class="publication-title" href="/ECommerce_Assign02/Blog/Publication/<?php echo $data['publication']->publication_id?>"><?php echo $data['publication']->publication_title?></a></h1>
             <p class="publication-info">
-                by <a href="#">John Smith</a>
+                by <a href="/ECommerce_Assign02/Blog/Profile/index/<?php echo $data['publication']->profile_id?>"><?php echo $data['profile']->first_name. ' '. $data['profile']->last_name;?></a>
             </p>
             <p class="publication-info">
-                February 28th, 2022
+            <?php echo $data['publication']->timestamp?>
             </p>
 
-            <p class="publication-text">
-                Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. 
-                Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, 
-                commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt 
-                condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. 
-                Donec non enim in turpis pulvinar facilisis. Ut felis. 
-                Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. 
-                Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus
+            <p class="publication-text">;
+            <?php echo $data['publication']->publication_text?>
             </p>
+            <?php 
+            if(!empty($_SESSION['author_id'])){
+                if($_SESSION['author_id']==$data['publication']->author_id){
+                    echo '<form action="/ECommerce_Assign02/Blog/Publication/deletePublication/'.$data['publication']->publication_id.'">
+                    <input class="delete-button" type="submit" value="Delete Post" /></form>';
+                    echo '<form action="/ECommerce_Assign02/Blog/Publication/updatePublication/'.$data['publication']->publication_id.'">
+                    <input class="edit-button" type="submit" value="Edit Post" />
+                    </form> </div>';
+                }
+            }
+                
+            ?>
         </div>
     </div>
 
+    <br><br>
 
     <div class="wrapper">
         <div class="publication-comment">
             <h1>Comments</h1>
             <button class="button-primary">Create Comment</button>
             <div class="comment-container">
-                <h3>Jane Doe</h3>
+                <h3>Jane Doe [Placeholder]</h3>
                 <h6>February 28th 2022 14h23</h6>
                 <p>
                     Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. 
