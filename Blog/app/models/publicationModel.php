@@ -69,15 +69,44 @@
             }
         }
 
-        public function deletePublication($publication_id){
-            $this->db->query('DELETE FROM publications WHERE publication_id=:publication_id');
-            $this->db->bind(':publication_id',$publication_id);
-
-            if($this->db->execute()){
-                return true;
+        public function markAsOpposite($publicationId, $profileId)
+        {
+            $this->db->query('SELECT * FROM publications WHERE publication_id = :publicationId AND profile_id = :profileId');
+            $this->db->bind('publicationId', $publicationId);
+            $this->db->bind('profileId', $profileId);
+            $publication = $this->db->getSingle();
+            if (isset($publication)) {
+                $this->db->query('UPDATE publications SET publication_status = :publicationStatus WHERE publication_id = :publicationId AND profile_id = :profileId');
+                $this->db->bind('publicationStatus', $publication->publication_status == 'private' ? 'public' : 'private');
+                $this->db->bind('publicationId', $publicationId);
+                $this->db->bind('profileId', $profileId);
+                return $this->db->execute();
             }
-            else{
-                return false;
-            }
+    
+            return false;
         }
-    }
+    
+        public function deletePublication($publicationId, $profileId)
+            {
+                $this->db->query('DELETE FROM publications WHERE publication_id = :publicationId AND profile_id = :profileId');
+                $this->db->bind('publicationId', $publicationId);
+                $this->db->bind('profileId', $profileId);
+                return $this->db->execute();
+            }
+
+
+        // public function deletePublication($publication_id){
+        //     $this->db->query('DELETE FROM publications WHERE publication_id=:publication_id');
+        //     $this->db->bind(':publication_id',$publication_id);
+
+        //     if($this->db->execute()){
+        //         return true;
+        //     }
+        //     else{
+        //         return false;
+        //     }
+        // }
+
+        
+}
+
