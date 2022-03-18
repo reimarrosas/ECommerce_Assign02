@@ -25,8 +25,6 @@ class Controller
     {
         if (!isLoggedIn()) {
             echo '<meta http-equiv="refresh" content="0;url=' . URLROOT . '/login" />';
-        } else if (!isset($_SESSION['profile_id'])) {
-            echo '<meta http-equiv="refresh" content="0;url=' . URLROOT . '/profile" />';
         } else {
             return true;
         }
