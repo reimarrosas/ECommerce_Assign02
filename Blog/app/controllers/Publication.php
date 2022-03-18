@@ -2,37 +2,34 @@
 class Publication extends Controller
 {
     public function __construct()
-    {   
+    {
         $this->loginModel = $this->model('loginModel');
         $this->profileModel = $this->model('profileModel');
         $this->publicationModel = $this->model('publicationModel');
-        
     }
 
     public function index($publication_id)
     {
-        
+
         $publication = $this->publicationModel->getPublication($publication_id);
         $profile = $this->profileModel->getProfile($publication->profile_id);
         $data = [
             'profile' => $profile,
             'publication' => $publication
         ];
-        
-        if($publication == null){ // if post does not exist, go to home page
+
+        if ($publication == null) { // if post does not exist, go to home page
             $this->view('Home/home');
+        } else {
+            $this->view('Publication/publication', $data);
         }
-        else{
-            $this->view('Publication/publication',$data);
-        }
-        
     }
 
-    public function createPublication(){
-        if(!isset($_POST['confirm'])){
+    public function createPublication()
+    {
+        if (!isset($_POST['confirm'])) {
             $this->view('Publication/createPublication');
-        }
-        else{
+        } else {
             date_default_timezone_set("America/New_York");
             $data = [
                 'publication_title' => $_POST['publication_title'],
@@ -44,17 +41,16 @@ class Publication extends Controller
                 'publication_text_len_error' => ''
             ];
 
-            if(isset($_POST['private_check'])){
+            if (isset($_POST['private_check'])) {
                 $data['publication_status'] = 'private';
-            }
-            else{
+            } else {
                 $data['publication_status'] = 'public';
             }
 
-            if($this->validateData($data,"create")){
+            if ($this->validateData($data, "create")) {
                 $profile = $this->profileModel->getMyProfile($_SESSION);
 
-                if($this->publicationModel->createPublication($data,$profile)){
+                if ($this->publicationModel->createPublication($data, $profile)) {
                     echo 'Please wait creating the publication for you!';
                     echo '<meta http-equiv="Refresh" content="2; url=/ECommerce_Assign02/Blog/Profile/myProfile">';
                 }
@@ -62,16 +58,16 @@ class Publication extends Controller
         }
     }
 
-    public function updatePublication($publication_id){
+    public function updatePublication($publication_id)
+    {
         $publication = $this->publicationModel->getPublication($publication_id);
         $data = [
             "publication" => $publication
         ];
 
-        if(!isset($_POST['confirm'])){
-            $this->view('Publication/updatePublication',$data);
-        }
-        else{
+        if (!isset($_POST['confirm'])) {
+            $this->view('Publication/updatePublication', $data);
+        } else {
             date_default_timezone_set("America/New_York");
             $data = [
                 'publication_id' => $publication_id,
@@ -84,54 +80,48 @@ class Publication extends Controller
                 'publication_text_len_error' => ''
             ];
 
-            if(isset($_POST['private_check'])){
+            if (isset($_POST['private_check'])) {
                 $data['publication_status'] = 'private';
-            }
-            else{
+            } else {
                 $data['publication_status'] = 'public';
             }
 
-            if($this->validateData($data,"update")){
+            if ($this->validateData($data, "update")) {
                 // $profile = $this->profileModel->getProfile($_SESSION);
 
-                if($this->publicationModel->updatePublication($data)){
+                if ($this->publicationModel->updatePublication($data)) {
                     echo 'Please wait updating the publication for you!';
-                    echo '<meta http-equiv="Refresh" content="2; url=/ECommerce_Assign02/Blog/Publication/'.$data['publication_id'].'">';
+                    echo '<meta http-equiv="Refresh" content="2; url=/ECommerce_Assign02/Blog/Publication/' . $data['publication_id'] . '">';
                 }
             }
         }
     }
 
-    public function deletePublication($publication_id){
-
-    }
-
-    public function validateData($data,$method){
-        if(empty($data['publication_title'])){
+    public function validateData($data, $method)
+    {
+        if (empty($data['publication_title'])) {
             $data['publication_title_error'] = 'Please enter a title.';
         }
-        if(empty($data['publication_text'])){
+        if (empty($data['publication_text'])) {
             $data['publication_text_error'] = 'Please enter text.';
         }
 
-        if(strlen($data['publication_title']) > 100){
+        if (strlen($data['publication_title']) > 100) {
             $data['publication_title_len_error'] = 'The title cannot be more than 100 characters';
         }
 
-        if(strlen($data['publication_text']) > 1000){
+        if (strlen($data['publication_text']) > 1000) {
             $data['publication_text_len_error'] = 'The text cannot be more than 1000 characters';
         }
 
 
-        if(empty($data['publication_title_error']) && empty($data['publication_text_error']) && empty($data['publication_title_len_error']) && empty($data['publication_text_len_error']) ){
+        if (empty($data['publication_title_error']) && empty($data['publication_text_error']) && empty($data['publication_title_len_error']) && empty($data['publication_text_len_error'])) {
             return true;
-        }
-        else{
-            if($method == "create"){
-                $this->view('Publication/createPublication',$data);
-            }
-            else if($method == "update"){
-                $this->view('Publication/updatePublication',$data);
+        } else {
+            if ($method == "create") {
+                $this->view('Publication/createPublication', $data);
+            } else if ($method == "update") {
+                $this->view('Publication/updatePublication', $data);
             }
         }
     }
@@ -139,7 +129,7 @@ class Publication extends Controller
     public function markAsOpposite($publicationId)
     {
         if ($this->isAuthorized()) {
-            $profileId = $_SESSION['profile_id'];
+            $profileId = $this->profileModel->getMyProfile($_SESSION)->profile_id;
             $isSucc = $this->publicationModel->markAsOpposite($publicationId, $profileId);
 
             if ($isSucc) {
@@ -154,15 +144,15 @@ class Publication extends Controller
     public function deletePublication($publicationId)
     {
         if ($this->isAuthorized()) {
-            $profileId = $_SESSION['profile_id'];
+            $profileId = $this->profileModel->getMyProfile($_SESSION)->profile_id;
             $isSucc = $this->publicationModel->deletePublication($publicationId, $profileId);
 
             if ($isSucc) {
-                echo '<meta http-equiv="refresh" content="0;url=' . URLROOT . '/profile/' . $profileId . '" />';
+                echo 'Publication ' . $publicationId . ' is successfully deleted. Redirecting to your profile';
             } else {
                 echo '<h1 class="text-danger">Internal Server Error: Something Broke!</h1>';
-                echo '<meta http-equiv="refresh" content="0;url=' . URLROOT . '/profile/' . $profileId . '" />';
             }
+            echo '<meta http-equiv="refresh" content="2;url=' . URLROOT . '/profile/' . $profileId . '" />';
         }
     }
 }
