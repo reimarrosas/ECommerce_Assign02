@@ -120,11 +120,11 @@ class Publication extends Controller
         }
 
         if (strlen($data['publication_title']) > 100) {
-            $data['publication_title_len_error'] = 'The title cannot be more than 100 characters';
+            $data['publication_title_len_error'] = 'The title cannot be more than 100 characters.';
         }
 
         if (strlen($data['publication_text']) > 1000) {
-            $data['publication_text_len_error'] = 'The text cannot be more than 1000 characters';
+            $data['publication_text_len_error'] = 'The text cannot be more than 1000 characters.';
         }
 
 
