@@ -7,6 +7,13 @@ class commentModel extends Model
         parent::__construct();
     }
 
+    public function getAllComments($publicationId)
+    {
+        $this->query('SELECT * FROM publication_comments WHERE publication_id = :publicationId');
+        $this->bind('publicationId', $publicationId);
+        return $this->getResultSet();
+    }
+
     public function getComment($commentId, $profileId)
     {
         $this->query('SELECT * FROM publication_comments WHERE publication_comment_id = :commentId AND profile_id = :profileId');

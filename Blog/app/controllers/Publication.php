@@ -6,6 +6,7 @@ class Publication extends Controller
         $this->loginModel = $this->model('loginModel');
         $this->profileModel = $this->model('profileModel');
         $this->publicationModel = $this->model('publicationModel');
+        $this->commentModel = $this->model('commentModel');
     }
 
     public function index($publication_id)
@@ -21,8 +22,20 @@ class Publication extends Controller
         if ($publication == null) { // if post does not exist, go to home page
             $this->view('Home/home');
         } else {
+            $profile = $this->profileModel->getMyProfile($_SESSION);
+            $data['profile_id'] = isLoggedIn() && $profile ? $this->profileModel->getMyProfile($_SESSION)->profile_id : -1;
+            $data['comments'] = $this->mapCommentsToProfile($this->commentModel->getAllComments($publication->publication_id));
             $this->view('Publication/publication', $data);
         }
+    }
+
+    public function mapCommentsToProfile($comments)
+    {
+        foreach ($comments as $comment) {
+            $comment->profile = $this->profileModel->getProfile($comment->profile_id);
+        }
+
+        return $comments;
     }
 
     public function createPublication()

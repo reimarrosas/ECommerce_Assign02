@@ -9,7 +9,7 @@
             <?php echo $data['publication']->timestamp ?>
         </p>
 
-        <p class="publication-text">;
+        <p class="publication-text">
             <?php echo $data['publication']->publication_text ?>
         </p>
         <?php
@@ -32,8 +32,25 @@
 <div class="wrapper">
     <div class="publication-comment">
         <h1>Comments</h1>
-        <a href="<?= URLROOT . '/Comment/createComment/' . $data['publication']->publication_id ?>"><button class="button-primary">Create Comment</button></a>
-        <div class="comment-container">
+        <a href="<?= URLROOT . '/Comment/createComment/' . $data['publication']->publication_id ?>">
+            <button class="button-primary">Create Comment</button>
+        </a>
+        <?php foreach ($data['comments'] as $comment) : ?>
+            <div class="comment-container">
+                <h3><?= $comment->profile->first_name . ' ' . $comment->profile->middle_name . ' ' . $comment->profile->last_name ?></h3>
+                <h6><?= $comment->timestamp ?></h6>
+                <p><?= $comment->comment ?></p>
+                <?php if ($comment->profile_id == $data['profile_id']): ?>
+                <a href="<?= URLROOT . '/Comment/deleteComment/' . $data['publication']->publication_id . '/' . $comment->publication_comment_id ?>">
+                    <button class="delete-button">Delete</button>
+                </a>
+                <a href="<?= URLROOT . '/Comment/updateComment/' . $data['publication']->publication_id . '/' . $comment->publication_comment_id ?>">
+                    <button class="edit-button">Edit</button>
+                </a>
+                <?php endif; ?>
+            </div>
+        <?php endforeach; ?>
+        <!-- <div class="comment-container">
             <h3>Jane Doe [Placeholder]</h3>
             <h6>February 28th 2022 14h23</h6>
             <p>
@@ -49,7 +66,7 @@
             </p>
             <button class="delete-button">Delete</button>
             <button class="edit-button">Edit</button>
-        </div>
+        </div> -->
     </div>
 </div>
 
