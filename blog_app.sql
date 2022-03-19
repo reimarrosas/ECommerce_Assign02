@@ -59,7 +59,7 @@ CREATE TABLE `publications` (
   `publication_id` int(11) NOT NULL,
   `profile_id` int(11) NOT NULL,
   `publication_title` varchar(255) NOT NULL,
-  `publication_text` varchar(255) NOT NULL,
+  `publication_text` varchar(1000) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
   `publication_status` varchar(8) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -72,7 +72,7 @@ CREATE TABLE `publications` (
 
 CREATE TABLE `publication_comments` (
   `publication_comment_id` int(11) NOT NULL,
-  `comment` varchar(255) NOT NULL,
+  `comment` varchar(200) NOT NULL,
   `profile_id` int(11) NOT NULL,
   `publication_id` int(11) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
