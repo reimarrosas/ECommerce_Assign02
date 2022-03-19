@@ -4,6 +4,7 @@ class Comment extends Controller
     public function __construct()
     {
         $this->commentModel = $this->model('commentModel');
+        $this->profileModel = $this->model('profileModel');
     }
 
     public function index()
@@ -14,14 +15,17 @@ class Comment extends Controller
     // CREATE COMMENT
     public function createComment($publicationId)
     {
-        $data = ['process' => 'Create'];
-        if (!$this->isAuthorized()) {
+        $profile = isLoggedIn() ? $this->profileModel->getMyProfile($_SESSION) : false;
+        if (!$profile) {
+            echo '<meta http-equiv="refresh" content="0;url=' . URLROOT . '/Profile/createProfile' . '" />';
             return;
-        } else if (!isset($_POST['confirm'])) {
-            $this->view('Comment/createComment', $data);
-        } else {
-            $profileId = $_SESSION['profile_id'];
+        }
 
+        $profileId = $profile->profile_id;
+
+        if (!isset($_POST['confirm'])) {
+            $this->view('Comment/createComment');
+        } else {
             $comment = $_POST['pub_comment'];
             $sanitized_comment = filter_var($comment, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
@@ -30,13 +34,12 @@ class Comment extends Controller
                 $this->view('Comment/createComment', $data);
             } else {
                 $isSucc = $this->commentModel->createComment($publicationId, $profileId, $sanitized_comment);
-                echo $isSucc;
                 if ($isSucc) {
-                    echo '<meta http-equiv="refresh" content="0;url=' . URLROOT . '/publication/' . $publicationId . '" />';
+                    echo 'Creating comment for publication ' . $publicationId;
                 } else {
                     echo '<h1 class="text-danger">Internal Server Error: Something Broke!</h1>';
-                    echo '<meta http-equiv="refresh" content="2;url=' . URLROOT . '/publication/' . $publicationId . '" />';
                 }
+                echo '<meta http-equiv="refresh" content="2;url=' . URLROOT . '/publication/' . $publicationId . '" />';
             }
         }
     }
@@ -44,53 +47,61 @@ class Comment extends Controller
     // UPDATE COMMENT
     public function updateComment($publicationId, $commentId)
     {
-        $data = ['process' => 'Update'];
-        if ($this->isAuthorized()) {
-            $profileId = $_SESSION['profile_id'];
-            if (!isset($_POST['confirm'])) {
-                $pub_comment = $this->commentModel->getComment($commentId, $profileId);
-                if (isset($pub_comment)) {
-                    $data['pub_comment'] = $pub_comment;
-                    $this->view('Comment/updateComment', $data);
-                } else {
-                    echo '<meta http-equiv="refresh" content="0;url=' . URLROOT . '/publication/' . $publicationId . '" />';
-                }
+        $profile = isLoggedIn() ? $this->profileModel->getMyProfile($_SESSION) : false;
+        if (!$profile) {
+            echo '<meta http-equiv="refresh" content="0;url=' . URLROOT . '/Profile/createProfile' . '" />';
+            return;
+        }
+
+        $profileId = $profile->profile_id;
+
+        if (!isset($_POST['confirm'])) {
+            $pub_comment = $this->commentModel->getComment($commentId, $profileId);
+            if (isset($pub_comment)) {
+                $data['pub_comment'] = $pub_comment;
+                $this->view('Comment/updateComment', $data);
             } else {
-                $comment = $_POST['pub_comment'];
-                $sanitized_comment = filter_var($comment, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                echo '<meta http-equiv="refresh" content="0;url=' . URLROOT . '/publication/' . $publicationId . '" />';
+            }
+        } else {
+            $comment = $_POST['pub_comment'];
+            $sanitized_comment = filter_var($comment, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-                if (strlen($sanitized_comment) < 1) {
-                    $data['error'] = 'Error: Comment does not allow special characters';
-                    $this->view('Comment/updateComment', $data);
+            if (strlen($sanitized_comment) < 1) {
+                $data['error'] = 'Error: Comment does not allow special characters';
+                $this->view('Comment/updateComment', $data);
+            } else {
+                $isSucc = $this->commentModel->updateComment($commentId, $profileId, $comment);
+
+                if ($isSucc) {
+                    echo 'Updating comment ' . $commentId . ' for publication ' . $publicationId;
                 } else {
-                    $isSucc = $this->commentModel->updateComment($commentId, $profileId);
-
-                    if ($isSucc) {
-                        echo '<meta http-equiv="refresh" content="0;url=' . URLROOT . '/publication/' . $publicationId . '" />';
-                    } else {
-                        echo '<h1 class="text-danger">Internal Server Error: Something Broke!</h1>';
-                        echo '<meta http-equiv="refresh" content="2;url=' . URLROOT . '/publication/' . $publicationId . '" />';
-                    }
+                    echo '<h1 class="text-danger">Internal Server Error: Something Broke!</h1>';
                 }
+                echo '<meta http-equiv="refresh" content="2;url=' . URLROOT . '/publication/' . $publicationId . '" />';
             }
         }
     }
 
     // DELETE COMMENT
-    public function deleteComment($commentId)
+    public function deleteComment($publicationId, $commentId)
     {
-        if (!$this->isAuthorized()) {
+        $profile = isLoggedIn() ? $this->profileModel->getMyProfile($_SESSION) : false;
+        if (!$profile) {
+            echo '<meta http-equiv="refresh" content="0;url=' . URLROOT . '/Profile/createProfile' . '" />';
             return;
-        } else {
-            $profileId = $_SESSION['profile_id'];
-            $isSucc = $this->commentModel->deleteComment($commentId, $profileId);
-
-            if ($isSucc) {
-                echo '<meta http-equiv="refresh" content="0;url=' . $_SERVER['HTTP_REFERRER'] . '" />';
-            } else {
-                echo '<h1 class="text-danger">Internal Server Error: Something Broke!</h1>';
-                echo '<meta http-equiv="refresh" content="2;url=' . $_SERVER['HTTP_REFERRER'] . '" />';
-            }
         }
+
+        $profileId = $profile->profile_id;
+
+        $profileId = $this->profileModel->getMyProfile($_SESSION)->profile_id;
+        $isSucc = $this->commentModel->deleteComment($commentId, $profileId);
+
+        if ($isSucc) {
+            echo 'Deleting comment ' . $commentId;
+        } else {
+            echo '<h1 class="text-danger">Internal Server Error: Something Broke!</h1>';
+        }
+        echo '<meta http-equiv="refresh" content="2;url=' . URLROOT . '/publication/' . $publicationId . '" />';
     }
 }
