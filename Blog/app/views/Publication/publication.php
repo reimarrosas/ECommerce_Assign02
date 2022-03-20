@@ -10,7 +10,7 @@
         </p>
 
         <p class="publication-text">
-            <?php echo $data['publication']->publication_text ?>
+            <?php echo '<pre>' . $data['publication']->publication_text . '</pre>'?>
         </p>
         <?php
         if (!empty($_SESSION['author_id'])) {
