@@ -22,7 +22,8 @@ class Publication extends Controller
         if ($publication == null) { // if post does not exist, go to home page
             $this->view('Home/home');
         } else {
-            $data['profile_id'] = isLoggedIn() && $profile ? $this->profileModel->getMyProfile($_SESSION)->profile_id : -1;
+            $profile = isLoggedIn() ? $this->profileModel->getMyProfile($_SESSION) : false;
+            $data['profile_id'] = $profile ? $profile->profile_id : -1;
             $data['comments'] = $this->commentModel->getAllComments($publication->publication_id);
             $this->view('Publication/publication', $data);
         }
