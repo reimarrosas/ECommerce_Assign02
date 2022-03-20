@@ -15,7 +15,11 @@ class Comment extends Controller
     // CREATE COMMENT
     public function createComment($publicationId)
     {
-        $profile = isLoggedIn() ? $this->profileModel->getMyProfile($_SESSION) : false;
+        if (!isLoggedIn()) {
+            echo '<meta http-equiv="refresh" content="0;url=' . URLROOT . '/Login" />';
+            return;
+        }
+        $profile = $this->profileModel->getMyProfile($_SESSION);
         if (!$profile) {
             echo '<meta http-equiv="refresh" content="0;url=' . URLROOT . '/Profile/createProfile' . '" />';
             return;
@@ -47,7 +51,11 @@ class Comment extends Controller
     // UPDATE COMMENT
     public function updateComment($publicationId, $commentId)
     {
-        $profile = isLoggedIn() ? $this->profileModel->getMyProfile($_SESSION) : false;
+        if (!isLoggedIn()) {
+            echo '<meta http-equiv="refresh" content="0;url=' . URLROOT . '/Login" />';
+            return;
+        }
+        $profile = $this->profileModel->getMyProfile($_SESSION);
         if (!$profile) {
             echo '<meta http-equiv="refresh" content="0;url=' . URLROOT . '/Profile/createProfile' . '" />';
             return;
@@ -86,7 +94,11 @@ class Comment extends Controller
     // DELETE COMMENT
     public function deleteComment($publicationId, $commentId)
     {
-        $profile = isLoggedIn() ? $this->profileModel->getMyProfile($_SESSION) : false;
+        if (!isLoggedIn()) {
+            echo '<meta http-equiv="refresh" content="0;url=' . URLROOT . '/Login" />';
+            return;
+        }
+        $profile = $this->profileModel->getMyProfile($_SESSION);
         if (!$profile) {
             echo '<meta http-equiv="refresh" content="0;url=' . URLROOT . '/Profile/createProfile' . '" />';
             return;
