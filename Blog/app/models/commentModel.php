@@ -9,7 +9,7 @@ class commentModel extends Model
 
     public function getAllComments($publicationId)
     {
-        $this->query('SELECT * FROM publication_comments WHERE publication_id = :publicationId');
+        $this->query('SELECT publication_comment_id, comment, pc.profile_id as profile_id, publication_id, timestamp, first_name, middle_name, last_name FROM publication_comments AS pc JOIN profiles AS p ON pc.profile_id = p.profile_id WHERE publication_id = :publicationId');
         $this->bind('publicationId', $publicationId);
         return $this->getResultSet();
     }

@@ -23,18 +23,9 @@ class Publication extends Controller
             $this->view('Home/home');
         } else {
             $data['profile_id'] = isLoggedIn() && $profile ? $this->profileModel->getMyProfile($_SESSION)->profile_id : -1;
-            $data['comments'] = $this->mapCommentsToProfile($this->commentModel->getAllComments($publication->publication_id));
+            $data['comments'] = $this->commentModel->getAllComments($publication->publication_id);
             $this->view('Publication/publication', $data);
         }
-    }
-
-    public function mapCommentsToProfile($comments)
-    {
-        foreach ($comments as $comment) {
-            $comment->profile = $this->profileModel->getProfile($comment->profile_id);
-        }
-
-        return $comments;
     }
 
     public function createPublication()

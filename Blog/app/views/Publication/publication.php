@@ -37,7 +37,7 @@
         </a>
         <?php foreach ($data['comments'] as $comment) : ?>
             <div class="comment-container">
-                <h3><?= $comment->profile->first_name . ' ' . $comment->profile->middle_name . ' ' . $comment->profile->last_name ?></h3>
+                <h3><?= $comment->first_name . ' ' . $comment->middle_name . ' ' . $comment->last_name ?></h3>
                 <h6><?= $comment->timestamp ?></h6>
                 <p><?= $comment->comment ?></p>
                 <?php if ($comment->profile_id == $data['profile_id']): ?>
