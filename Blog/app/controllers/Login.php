@@ -79,7 +79,7 @@ class Login extends Controller
                     if ($this->loginModel->createAuthor($data)) {
                         // $this->createSession($author);
                         echo 'Please wait creating the account for ' . trim($_POST['username']);
-                        echo '<meta http-equiv="Refresh" content="2; url=/ECommerce_Assign02/Blog/">';
+                        echo '<meta http-equiv="Refresh" content="2; url=/ECommerce_Assign02/Blog/Login">';
                     }
                 }
             } else {
