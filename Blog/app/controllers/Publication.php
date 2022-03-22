@@ -66,7 +66,14 @@ class Publication extends Controller
     {
         $publication = $this->publicationModel->getPublication($publication_id);
         $data = [
-            "publication" => $publication
+            'publication_id' => $publication_id,
+            'publication_title' => $publication->publication_title,
+            'publication_text' => $publication->publication_text,
+            'publication_status' => $publication->publication_status,
+            // 'timestamp'=>  date('F d, Y h:i A'),
+            'publication_title_error' => '',
+            'publication_text_error' => '',
+            'publication_text_len_error' => ''
         ];
 
         if (!isset($_POST['confirm'])) {
