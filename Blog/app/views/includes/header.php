@@ -23,9 +23,19 @@
         <div class="logo">
           <a href="/ECommerce_Assign02/Blog/Home">Blog.IO</a>
         </div>
-        <div class="search-bar">
-          <input type="text" placeholder="Search Publication...">
-        </div>
+        
+        <form class="form-inline" action="/ECommerce_Assign02/Blog/Search/getResultByTitle/" method="POST">
+          <div class="search-bar">
+            
+            <input type="text" name="search_text" placeholder="Search Publication...">
+            <select name="search_type" <?php ?>>
+              <option value="Title" selected>By Tilte</option>
+              <option value="Content">By Content</option>
+              <option value="Latest">Latest</option>
+            </select>
+            <button type="submit" name="search"> Search</button>
+          </div>
+        </form>
         <div class="nav-items">
           <ul>
             <?php
