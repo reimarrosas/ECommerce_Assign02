@@ -17,14 +17,13 @@ class Search extends Controller
             // var_dump($_POST['search_type']);
             $data = $_POST['search_text'];
             $isSucc = $this->searchModel->getResultByTitle($data);
-            var_dump($isSucc);
             $this->view('Search/search', $isSucc);
         }
 
         else if(isset($_POST['search']) && $_POST['search_type'] == "Content"){
             $data = $_POST['search_text'];
             $isSucc = $this->searchModel->getResultByContent($data);
-            $this->view('Search/seaerch', $isSucc);
+            $this->view('Search/search', $isSucc);
         }
 
         elseif ($_POST['search_type'] == "Latest"){

@@ -15,8 +15,8 @@
 
         public function getResultByContent($content){
             $this->db->query("SELECT *
-                                FROM   publications
-                                WHERE  ' ' + publication_text + ' ' LIKE '% :content %'
+                                FROM publications
+                                WHERE publication_text LIKE CONCAT('%', :content, '%')
                             ");
             $this->db->bind(':content', $content);
             return $this->db->getResultSet();                
