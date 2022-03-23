@@ -1,6 +1,10 @@
 <?php require APPROOT . '/views/includes/header.php'; ?>
     
-            
+<div class="wrapper">
+        <div class="search-text">
+            <h1>Welcome to Blog.IO! </h1>
+        </div>
+  <hr>
 <?php
     foreach(array_reverse($data['publications']) as $publication){ // array_reverse() allows to show latest publications at the top
         if($publication->publication_status=="public"){ // only show public publications on home page
@@ -17,6 +21,6 @@
         }
     };
 ?>
-
+</div>
 
 <?php require APPROOT . '/views/includes/footer.php'; ?>

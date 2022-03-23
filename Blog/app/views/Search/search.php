@@ -1,9 +1,12 @@
 <?php require APPROOT . '/views/includes/header.php'; ?>
-    <h1 class="container">Search View</h1>
-    <div class="jumbotron container">
-  
+    
+<div class="wrapper">
+        <div class="search-text">
+            <h1>Search Term: <?php echo $data['term']?></h1>
+        </div>
+  <hr>
  <?php
-    foreach($data as $publication){
+    foreach($data['result'] as $publication){
         if($publication->publication_status=="public"){
             echo '<div class= "wrapper">';
             echo '<div class="publication-link">';
@@ -16,6 +19,6 @@
         }
     };
 ?>
-        
-</div>
+      </div>  
+
 <?php require APPROOT . '/views/includes/footer.php'; ?>

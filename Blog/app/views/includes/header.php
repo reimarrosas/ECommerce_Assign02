@@ -29,7 +29,7 @@
             
             <input type="text" name="search_text" placeholder="Search Publication...">
             <select name="search_type" <?php ?>>
-              <option value="Title" selected>By Tilte</option>
+              <option value="Title" selected>By Title</option>
               <option value="Content">By Content</option>
               <option value="Latest">Latest</option>
             </select>

@@ -9,9 +9,9 @@
             <?php echo $data['publication']->timestamp ?>
         </p>
 
-        <p class="publication-text">
+        
             <?php echo '<pre>' . $data['publication']->publication_text . '</pre>'?>
-        </p>
+        
         <?php
         if (!empty($_SESSION['author_id'])) {
             if ($_SESSION['author_id'] == $data['publication']->author_id) {

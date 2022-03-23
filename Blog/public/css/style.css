@@ -228,7 +228,17 @@ a:hover {
     padding: 25px;
     line-height: 2;
 }
-
+pre{
+    padding: 25px;
+    line-height: 2;
+    font-size: 25px;
+    overflow-x: auto;
+        white-space: pre-wrap;
+        white-space: -moz-pre-wrap;
+        white-space: -pre-wrap;
+        white-space: -o-pre-wrap;
+        word-wrap: break-word;
+}
 .publication-comment h1{
     float: left;
     width: fit-content;

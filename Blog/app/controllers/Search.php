@@ -4,6 +4,7 @@ class Search extends Controller
     public function __construct()
     {
         $this->searchModel = $this->model('searchModel');
+        $this->publicationModel = $this->model('publicationModel');
     }
 
     public function index()
@@ -13,32 +14,48 @@ class Search extends Controller
     
     public function getResultByTitle(){
         
-        if(isset($_POST['search']) && $_POST['search_type'] == "Title"){
-            // var_dump($_POST['search_type']);
-            $data = $_POST['search_text'];
-            $isSucc = $this->searchModel->getResultByTitle($data);
-            $this->view('Search/search', $isSucc);
+        if(!empty($_POST['search_text'])){
+            if(isset($_POST['search']) && $_POST['search_type'] == "Title"){
+                // var_dump($_POST['search_type']);
+                $data = [
+                    'term' => $_POST['search_text'],
+                    'result' => $this->searchModel->getResultByTitle($_POST['search_text'])
+                ];
+                
+                $this->view('Search/search', $data);
+            }
+    
+            else if(isset($_POST['search']) && $_POST['search_type'] == "Content"){
+                $data = [
+                    'term' => $_POST['search_text'],
+                    'result' => $this->searchModel->getResultByContent($_POST['search_text'])
+                ];
+                
+                $this->view('Search/search', $data);
+            }
+    
+            else if ($_POST['search_type'] == "Latest"){
+                
+                $data = $this->searchModel->getResultByLatest();
+                $this->view('Search/search', $data);
+            }
         }
-
-        else if(isset($_POST['search']) && $_POST['search_type'] == "Content"){
-            $data = $_POST['search_text'];
-            $isSucc = $this->searchModel->getResultByContent($data);
-            $this->view('Search/search', $isSucc);
-        }
-
-        elseif ($_POST['search_type'] == "Latest"){
-            $isSucc = $this->searchModel->getResultByLatest();
-            $this->view('Search/search', $isSucc);
+        else{
+            $publications = $this->publicationModel->getEveryPublications();
+            $data = [
+                'publications' => $publications
+            ];
+            $this->view('Home/home',$data);
         }
     }
 
     public function getResultByLatest(){
-        var_dump("latest");
+        // var_dump("latest");
         $this->view('Search/search');
     }
 
     public function getResultByContent(){
-        var_dump("content");
+        // var_dump("content");
         $this->view('Search/search');
     }
 }
