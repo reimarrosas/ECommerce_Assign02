@@ -46,7 +46,7 @@
             } 
             else {
 
-              echo '<li><a href="/ECommerce_Assign02/Blog/Login/register" name="signup"> Sign Up</a></li>
+              echo '<li><a href="/ECommerce_Assign02/Blog/Login/register" name="signup"> Register</a></li>
                   <li><a href="/ECommerce_Assign02/Blog/Login/index" name="signin"> Login</a></li>';
             }
             ?>
